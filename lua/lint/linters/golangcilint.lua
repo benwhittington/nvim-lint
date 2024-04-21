@@ -6,24 +6,22 @@ local severities = {
 }
 
 return {
-  cmd = 'golangci-lint',
+  cmd = "golangci-lint",
   append_fname = false,
+  stdin = "true",
   args = {
-    'run',
-    '--out-format',
-    'json',
-    function()
-      return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":h")
-    end
+    "run",
+    "--out-format",
+    "json",
   },
-  stream = 'stdout',
+  stream = "stdout",
   ignore_exitcode = true,
   parser = function(output, bufnr, cwd)
-    if output == '' then
+    if output == "" then
       return {}
     end
     local decoded = vim.json.decode(output)
-    if decoded["Issues"] == nil or type(decoded["Issues"]) == 'userdata' then
+    if decoded["Issues"] == nil or type(decoded["Issues"]) == "userdata" then
       return {}
     end
 
@@ -46,5 +44,5 @@ return {
       end
     end
     return diagnostics
-  end
+  end,
 }
